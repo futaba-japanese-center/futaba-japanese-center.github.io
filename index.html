@@ -6,7 +6,7 @@
 <title>FUTABA 日本語トレーニングセンター｜会社案内</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Old+Mincho:wght@600;700;900&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Old+Mincho:wght@600;700;900&family=Outfit:wght@400;600;800&family=Noto+Sans:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --sprout:#6cae3e;      /* FUTABA leaf green */
@@ -258,7 +258,17 @@ footer .brand .sub{color:rgba(255,255,255,.6)}
 .lang-toggle button.active{background:var(--sprout-deep);color:#fff}
 .lang-toggle button:not(.active):hover{background:rgba(108,174,62,.12)}
 @media(max-width:640px){.lang-toggle{margin-left:10px}}
-.mn-font{font-family:"Zen Kaku Gothic New",system-ui,sans-serif}
+.mn-font{font-family:"Noto Sans","Zen Kaku Gothic New",system-ui,sans-serif;font-feature-settings:normal;letter-spacing:0}
+
+/* ---------- lightbox ---------- */
+.about-media img,.prog-media img,.fields-media img,.str-media img,.hero-visual .frame img{cursor:zoom-in}
+#lightbox{position:fixed;inset:0;z-index:200;background:rgba(38,48,28,.9);display:none;align-items:center;justify-content:center;padding:24px;cursor:zoom-out;opacity:0;transition:opacity .25s}
+#lightbox.open{display:flex;opacity:1}
+#lightbox img{max-width:94vw;max-height:90vh;border-radius:14px;box-shadow:0 30px 80px -20px rgba(0,0,0,.6);border:5px solid #fff;transform:scale(.96);transition:transform .25s}
+#lightbox.open img{transform:scale(1)}
+#lightbox .lb-close{position:absolute;top:20px;right:26px;color:#fff;font-size:2rem;line-height:1;font-family:"Outfit",sans-serif;cursor:pointer;opacity:.85}
+#lightbox .lb-close:hover{opacity:1}
+@media(prefers-reduced-motion:reduce){#lightbox,#lightbox img{transition:none}}
 
 /* reveal */
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
@@ -461,7 +471,7 @@ footer .brand .sub{color:rgba(255,255,255,.6)}
     </div>
     <div class="fcol">
       <h4><span data-ja>会社概要</span><span data-mn class="mn-font">Танилцуулга</span></h4>
-      <p><span data-ja>設立：2022年3月7日<br>所在地：モンゴル・ウランバートル<br>日本語教育／留学・就職支援</span><span data-mn class="mn-font">Байгуулагдсан: 2022.03.07<br>Байршил: Монгол, Улаанбаатар<br>Япон хэл / Суралцах・Ажлын дэмжлэг</span></p>
+      <p><span data-ja>設立：2022年3月7日<br>所在地：モンゴル・ウランバートル<br>バヤンズルフ区 エンフタイワン通り 18A-1<br>モンゴル農業協同組合連合会ビル 13381<br>日本語教育／留学・就職支援</span><span data-mn class="mn-font">Байгуулагдсан: 2022.03.07<br>БЗ дүүрэг, Энхтайвны өргөн чөлөө, 18A-1<br>ХАА-н хоршоологчдын үндэсний холбооны байр<br>Улаанбаатар 13381<br>Япон хэл / Суралцах・Ажлын дэмжлэг</span></p>
     </div>
     <div class="fcol">
       <h4><span data-ja>お問い合わせ</span><span data-mn class="mn-font">Холбоо барих</span></h4>
@@ -470,6 +480,8 @@ footer .brand .sub{color:rgba(255,255,255,.6)}
   </div>
   <div class="wrap"><div class="copy">© 2025 FUTABA Japanese Language Training Center ／ TSOLMON Center. Bridging Mongolia and Japan through Education.</div></div>
 </footer>
+
+<div id="lightbox"><span class="lb-close" aria-label="閉じる">&times;</span><img src="" alt=""></div>
 
 <script>
 function setLang(l){
@@ -481,6 +493,24 @@ function setLang(l){
 }
 const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.14});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// lightbox: click image to enlarge
+(function(){
+  const lb=document.getElementById('lightbox');
+  const lbImg=lb.querySelector('img');
+  const sel='.about-media img,.prog-media img,.fields-media img,.str-media img,.hero-visual .frame img';
+  document.querySelectorAll(sel).forEach(img=>{
+    img.addEventListener('click',()=>{
+      lbImg.src=img.currentSrc||img.src;
+      lbImg.alt=img.alt||'';
+      lb.classList.add('open');
+      document.body.style.overflow='hidden';
+    });
+  });
+  function close(){lb.classList.remove('open');document.body.style.overflow='';}
+  lb.addEventListener('click',close);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+})();
 </script>
 </body>
 </html>
